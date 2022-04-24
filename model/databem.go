@@ -8,4 +8,5 @@ type DataIG struct {
 	Caption      string `gorm:"caption"`
 	Tanggal      string `gorm:"tanggal"`
 	Hari         string `gorm:"hari"`
+	LinkMedia    string `gorm:"link_media"`
 }

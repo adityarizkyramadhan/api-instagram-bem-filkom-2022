@@ -48,6 +48,7 @@ func GetResponseFromIG() error {
 		dumb := time.Unix(int64(response.(map[string]interface{})["taken_at"].(float64)), 0)
 		temp.Tanggal = dumb.Format("02-01-2006")
 		temp.Hari = dumb.Weekday().String()
+		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
 		responses = append(responses, temp)
 	}
 	if err := addData(responses); err != nil {
