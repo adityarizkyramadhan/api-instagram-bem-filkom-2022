@@ -18,7 +18,7 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": true,
-			"pesan":  "gausah usil ya!",
+			"pesan":  "Hello KBMFILKOM!",
 		})
 	})
 	r.GET("/data", handler.GetDataFromDataBase)
