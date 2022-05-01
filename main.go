@@ -24,6 +24,9 @@ func main() {
 	r.GET("/data", handler.GetDataFromDataBase)
 	r.GET("/update", handler.UpdateDataInstagram)
 	r.Run()
+
+	// status := strings.Contains("RUMAH ADVOKASI | Launching Rumah Advokasi", "RUMAH ADVOKASI")
+	// fmt.Println(status)
 	// Parse time "created_at": 1649509730,in golang
 	// var waktu int64 = 1649509730
 	// var created_at time.Time = time.Unix(waktu, 0)

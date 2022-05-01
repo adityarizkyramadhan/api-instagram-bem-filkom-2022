@@ -35,7 +35,6 @@ func GetResponseFromIG() error {
 	if err := json.Unmarshal(body, &data); err != nil {
 		return err
 	}
-	fmt.Println(string(body))
 	if data.Body == nil {
 		panic("data kosong")
 	}
@@ -49,7 +48,9 @@ func GetResponseFromIG() error {
 		temp.Tanggal = dumb.Format("02-01-2006")
 		temp.Hari = dumb.Weekday().String()
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
-		responses = append(responses, temp)
+		if strings.Contains(temp.Caption, "RUMAH ADVOKASI") {
+			responses = append(responses, temp)
+		}
 	}
 	if err := addData(responses); err != nil {
 		return err
