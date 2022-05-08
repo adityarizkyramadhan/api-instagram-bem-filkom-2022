@@ -3,43 +3,22 @@ package service
 import (
 	"api-instagram-bem-filkom-2022/config"
 	"api-instagram-bem-filkom-2022/model"
-	"fmt"
+	"context"
 )
 
 var db, _ = config.InitDB()
 
 func addData(data []model.DataIG) error {
-	fmt.Println("===============================================================")
-	fmt.Println(data)
-	dataDB, _ := GetData()
-	if dataDB == nil {
-		if err := db.Create(&data).Error; err != nil {
-			return err
-		}
+	db_manual := config.GetDB()
+	test, err := GetData()
+	if err != nil {
+		return err
 	}
-	if len(data) != 0 {
-		// replace dataDb lama ke data yang baru
-		for _, dataNew := range data {
-			for i, dataOld := range dataDB {
-				if dataOld.LinkMedia == dataNew.LinkMedia {
-					// update in database
-					dataDB[i] = dataNew
-				}
-			}
-		}
-		// save data db yang lain ke array yang baru
-		for _, dataNew := range data {
-			for _, dataOld := range dataDB {
-				if dataOld.LinkMedia != dataNew.LinkMedia {
-					dataDB = append(dataDB, dataNew)
-				}
-			}
-		}
+	if test != nil {
+		db_manual.ExecContext(context.Background(), "TRUNCATE TABLE data_igs;")
 	}
-	for _, dataCreate := range dataDB {
-		if err := db.Create(&dataCreate).Error; err != nil {
-			return err
-		}
+	if err := db.Create(&data).Error; err != nil {
+		return err
 	}
 	return nil
 }

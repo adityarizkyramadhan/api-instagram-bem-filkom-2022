@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -36,7 +37,7 @@ func GetResponseFromIG() error {
 		return err
 	}
 	if data.Body == nil {
-		panic("data kosong")
+		os.Exit(1)
 	}
 
 	var responses []model.DataIG
@@ -48,7 +49,7 @@ func GetResponseFromIG() error {
 		temp.Tanggal = dumb.Format("02-01-2006")
 		temp.Hari = dumb.Weekday().String()
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
-		if strings.Contains(temp.Caption, "RUMAH ADVOKASI") {
+		if strings.Contains(temp.Caption, "Advokesma") || strings.Contains(temp.Caption, "advokesma") || strings.Contains(temp.Caption, "ADVOKESMA") {
 			responses = append(responses, temp)
 		}
 	}
