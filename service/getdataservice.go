@@ -46,7 +46,7 @@ func GetResponseFromIG() error {
 		temp.ThumbnailSrc = strings.Replace(response.(map[string]interface{})["image_versions2"].(map[string]interface{})["candidates"].([]interface{})[0].(map[string]interface{})["url"].(string), "\\", "", 1)
 		temp.Caption = response.(map[string]interface{})["caption"].(map[string]interface{})["text"].(string)
 		dumb := time.Unix(int64(response.(map[string]interface{})["taken_at"].(float64)), 0)
-		temp.Tanggal = dumb.Format("02-01-2006")
+		temp.Tanggal = string(dumb.Day()) + " " + dumb.Month().String() + " " + string(dumb.Year())
 		temp.Hari = dumb.Weekday().String()
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
 		responses = append(responses, temp)
