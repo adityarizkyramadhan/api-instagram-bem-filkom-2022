@@ -49,9 +49,7 @@ func GetResponseFromIG() error {
 		temp.Tanggal = dumb.Format("02-01-2006")
 		temp.Hari = dumb.Weekday().String()
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
-		if strings.Contains(temp.Caption, "Advokesma") || strings.Contains(temp.Caption, "advokesma") || strings.Contains(temp.Caption, "ADVOKESMA") {
-			responses = append(responses, temp)
-		}
+		responses = append(responses, temp)
 	}
 	if err := addData(responses); err != nil {
 		return err

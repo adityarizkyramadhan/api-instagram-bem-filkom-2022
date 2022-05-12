@@ -13,6 +13,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	r := gin.Default()
 	r.Use(cors.Default())
 	r.GET("/", func(c *gin.Context) {
