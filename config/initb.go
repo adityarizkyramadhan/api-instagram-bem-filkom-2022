@@ -9,11 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
-var dns = "user=postgres password=adityarizky1020 host=db.jgjyjvyldoamqndazixl.supabase.co TimeZone=Asia/Singapore port=5432 dbname=postgres"
+var dsn = "user=postgres password=adityarizky1020 host=db.jgjyjvyldoamqndazixl.supabase.co TimeZone=Asia/Singapore port=5432 dbname=postgres"
 
 func InitDB() (*gorm.DB, error) {
 
-	db, err := gorm.Open(postgres.Open(dns), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -22,7 +22,7 @@ func InitDB() (*gorm.DB, error) {
 }
 
 func GetDB() *sql.DB {
-	db_manual, err := sql.Open("postgres", dns)
+	db_manual, err := sql.Open("postgres", dsn)
 	if err != nil {
 		panic(err)
 	}
