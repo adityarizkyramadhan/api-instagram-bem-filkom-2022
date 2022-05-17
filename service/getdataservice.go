@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
@@ -29,19 +28,20 @@ func GetResponseFromIG() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(res.StatusCode)
+	// fmt.Println(res.StatusCode)
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil || body == nil {
+		return err
+	}
 	if err := json.Unmarshal(body, &data); err != nil {
 		return err
 	}
-	if data.Body == nil {
-		os.Exit(1)
-	}
-
 	var responses []model.DataIG
 	for _, response := range data.Body["items"].([]interface{}) {
+		if response == nil {
+			break
+		}
 		var temp model.DataIG
 		temp.ThumbnailSrc = strings.Replace(response.(map[string]interface{})["image_versions2"].(map[string]interface{})["candidates"].([]interface{})[0].(map[string]interface{})["url"].(string), "\\", "", 1)
 		temp.Caption = response.(map[string]interface{})["caption"].(map[string]interface{})["text"].(string)
@@ -54,5 +54,55 @@ func GetResponseFromIG() error {
 	if err := addData(responses); err != nil {
 		return err
 	}
+	fmt.Println("IG BEM FILKOM UB")
+	return nil
+}
+
+func GetResponseFromHastag() error {
+	link := "https://instagram47.p.rapidapi.com/hashtag_post?hashtag=sjwfilkom"
+	// link := fmt.Sprintf("https://instagram47.p.rapidapi.com/user_posts?username=%s", username)
+	req, err := http.NewRequest("GET", link, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Add("X-RapidAPI-Host", "instagram47.p.rapidapi.com'")
+	req.Header.Add("X-RapidAPI-Key", "72952e64bdmshe2e87b888f28b6dp1c9e44jsn7954eb2f9159")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	// jsonFile, err := os.Open("../response.json")
+	// if err != nil {
+	// 	return err
+	// }
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil || body == nil {
+		return err
+	}
+	var data map[string]interface{}
+	if err := json.Unmarshal(body, &data); err != nil {
+		return err
+	}
+	var responses []model.DataIGSjw
+	for _, response := range data["body"].(map[string]interface{})["edge_hashtag_to_media"].(map[string]interface{})["edges"].([]interface{}) {
+		if response == nil {
+			break
+		}
+		var temp model.DataIGSjw
+		temp.ThumbnailSrc = strings.Replace(response.(map[string]interface{})["node"].(map[string]interface{})["thumbnail_src"].(string), "\\", "", 1)
+		temp.Caption = response.(map[string]interface{})["node"].(map[string]interface{})["edge_media_to_caption"].(map[string]interface{})["edges"].([]interface{})[0].(map[string]interface{})["node"].(map[string]interface{})["text"].(string)
+		dumb := time.Unix(int64(data["body"].(map[string]interface{})["edge_hashtag_to_media"].(map[string]interface{})["edges"].([]interface{})[0].(map[string]interface{})["node"].(map[string]interface{})["taken_at_timestamp"].(float64)), 0)
+		temp.Tanggal = fmt.Sprintf("%d %s %d", dumb.Day(), dumb.Month().String(), dumb.Year())
+		temp.Hari = dumb.Weekday().String()
+		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["node"].(map[string]interface{})["shortcode"].(string))
+		responses = append(responses, temp)
+	}
+	if err := addDataSjw(responses); err != nil {
+		return err
+	}
+	fmt.Println("IG SJW FILKOM")
 	return nil
 }

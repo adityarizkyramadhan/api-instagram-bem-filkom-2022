@@ -17,7 +17,7 @@ func InitDB() (*gorm.DB, error) {
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&model.DataIG{})
+	db.AutoMigrate(&model.DataIG{}, &model.DataIGSjw{})
 	return db, err
 }
 

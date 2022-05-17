@@ -23,6 +23,8 @@ func main() {
 		})
 	})
 	r.GET("/data", handler.GetDataFromDataBase)
+	r.GET("/sjw", handler.GetDataSjw)
+	r.GET("/updatesjw", handler.UpdateDataSjw)
 	r.GET("/update", handler.UpdateDataInstagram)
 	r.Run()
 
