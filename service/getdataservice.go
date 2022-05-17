@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 func GetResponseFromIG() error {
@@ -86,11 +88,11 @@ func GetResponseFromHastag() error {
 	if err := json.Unmarshal(body, &data); err != nil {
 		return err
 	}
+	if data["body"] == nil {
+		return errors.New("data is empty")
+	}
 	var responses []model.DataIGSjw
 	for _, response := range data["body"].(map[string]interface{})["edge_hashtag_to_media"].(map[string]interface{})["edges"].([]interface{}) {
-		if response == nil {
-			break
-		}
 		var temp model.DataIGSjw
 		temp.ThumbnailSrc = strings.Replace(response.(map[string]interface{})["node"].(map[string]interface{})["thumbnail_src"].(string), "\\", "", 1)
 		temp.Caption = response.(map[string]interface{})["node"].(map[string]interface{})["edge_media_to_caption"].(map[string]interface{})["edges"].([]interface{})[0].(map[string]interface{})["node"].(map[string]interface{})["text"].(string)
