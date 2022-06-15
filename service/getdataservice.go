@@ -13,14 +13,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-func GetResponseFromIG() error {
+func GetResponseFromIG() ([]model.DataIG, error) {
 	fmt.Println("GetResponseFromIG")
 	var data entity.ResponseKedua
 	link := "https://instagram47.p.rapidapi.com/user_posts?username=bemfilkomub"
 	// link := fmt.Sprintf("https://instagram47.p.rapidapi.com/user_posts?username=%s", username)
 	req, err := http.NewRequest("GET", link, nil)
 	if err != nil {
-		return err
+		return []model.DataIG{}, err
 	}
 
 	req.Header.Add("X-RapidAPI-Host", "instagram47.p.rapidapi.com'")
@@ -28,16 +28,16 @@ func GetResponseFromIG() error {
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return err
+		return []model.DataIG{}, err
 	}
 	// fmt.Println(res.StatusCode)
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil || body == nil {
-		return err
+		return []model.DataIG{}, err
 	}
 	if err := json.Unmarshal(body, &data); err != nil {
-		return err
+		return []model.DataIG{}, err
 	}
 	var responses []model.DataIG
 	for _, response := range data.Body["items"].([]interface{}) {
@@ -53,19 +53,16 @@ func GetResponseFromIG() error {
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["code"].(string))
 		responses = append(responses, temp)
 	}
-	if err := addData(responses); err != nil {
-		return err
-	}
-	fmt.Println("IG BEM FILKOM UB")
-	return nil
+
+	return responses, nil
 }
 
-func GetResponseFromHastag() error {
+func GetResponseFromHastag() ([]model.DataIGSjw, error) {
 	link := "https://instagram47.p.rapidapi.com/hashtag_post?hashtag=sjwfilkom"
 	// link := fmt.Sprintf("https://instagram47.p.rapidapi.com/user_posts?username=%s", username)
 	req, err := http.NewRequest("GET", link, nil)
 	if err != nil {
-		return err
+		return []model.DataIGSjw{}, err
 	}
 
 	req.Header.Add("X-RapidAPI-Host", "instagram47.p.rapidapi.com'")
@@ -73,7 +70,7 @@ func GetResponseFromHastag() error {
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return err
+		return []model.DataIGSjw{}, err
 	}
 	defer res.Body.Close()
 	// jsonFile, err := os.Open("../response.json")
@@ -82,14 +79,14 @@ func GetResponseFromHastag() error {
 	// }
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil || body == nil {
-		return err
+		return []model.DataIGSjw{}, err
 	}
 	var data map[string]interface{}
 	if err := json.Unmarshal(body, &data); err != nil {
-		return err
+		return []model.DataIGSjw{}, err
 	}
 	if data["body"] == nil {
-		return errors.New("data is empty")
+		return []model.DataIGSjw{}, errors.New("data is empty")
 	}
 	var responses []model.DataIGSjw
 	for _, response := range data["body"].(map[string]interface{})["edge_hashtag_to_media"].(map[string]interface{})["edges"].([]interface{}) {
@@ -102,9 +99,5 @@ func GetResponseFromHastag() error {
 		temp.LinkMedia = fmt.Sprintf("https://www.instagram.com/p/%s/", response.(map[string]interface{})["node"].(map[string]interface{})["shortcode"].(string))
 		responses = append(responses, temp)
 	}
-	if err := addDataSjw(responses); err != nil {
-		return err
-	}
-	fmt.Println("IG SJW FILKOM")
-	return nil
+	return responses, nil
 }

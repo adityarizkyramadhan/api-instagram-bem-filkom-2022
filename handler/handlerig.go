@@ -12,17 +12,8 @@ import (
 // 	Id string `uri :"id"`
 // }
 
-func UpdateDataInstagram(c *gin.Context) {
-	err := service.GetResponseFromIG()
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err))
-		return
-	}
-	c.JSON(http.StatusOK, helper.ResponseAPI("Data diupdate", true, nil))
-}
-
-func GetDataFromDataBase(c *gin.Context) {
-	data, err := service.GetData()
+func GetDataBemFilkom(c *gin.Context) {
+	data, err := service.GetResponseFromIG()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err))
 		return
@@ -30,16 +21,8 @@ func GetDataFromDataBase(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.ResponseAPI("Data dari database berhasil ditemukan", true, data))
 }
 
-func UpdateDataSjw(c *gin.Context) {
-	err := service.GetResponseFromHastag()
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err))
-		return
-	}
-	c.JSON(http.StatusOK, helper.ResponseAPI("Data diupdate", true, nil))
-}
 func GetDataSjw(c *gin.Context) {
-	data, err := service.GetDataSjw()
+	data, err := service.GetResponseFromHastag()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err))
 		return

@@ -1,19 +1,16 @@
 package main
 
 import (
-	"api-instagram-bem-filkom-2022/config"
 	"api-instagram-bem-filkom-2022/handler"
+	"github.com/gin-contrib/cache/persistence"
+	"time"
 
+	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	_, err := config.InitDB()
-	if err != nil {
-		panic(err)
-	}
-
 	r := gin.Default()
 	r.Use(cors.Default())
 	r.GET("/", func(c *gin.Context) {
@@ -22,12 +19,10 @@ func main() {
 			"pesan":  "Hello KBMFILKOM!",
 		})
 	})
-	r.GET("/data", handler.GetDataFromDataBase)
-	r.GET("/sjw", handler.GetDataSjw)
-	r.GET("/updatesjw", handler.UpdateDataSjw)
-	r.GET("/update", handler.UpdateDataInstagram)
+	store := persistence.NewInMemoryStore(5 * time.Hour)
+	r.GET("/data", cache.CachePage(store, 5*time.Hour, handler.GetDataBemFilkom))
+	r.GET("/sjw", cache.CachePage(store, 5*time.Hour, handler.GetDataSjw))
 	r.Run()
-
 	// status := strings.Contains("RUMAH ADVOKASI | Launching Rumah Advokasi", "RUMAH ADVOKASI")
 	// fmt.Println(status)
 	// Parse time "created_at": 1649509730,in golang
