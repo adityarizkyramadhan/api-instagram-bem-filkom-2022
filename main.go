@@ -2,8 +2,9 @@ package main
 
 import (
 	"api-instagram-bem-filkom-2022/handler"
-	"github.com/gin-contrib/cache/persistence"
 	"time"
+
+	"github.com/gin-contrib/cache/persistence"
 
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cors"
@@ -19,9 +20,9 @@ func main() {
 			"pesan":  "Hello KBMFILKOM!",
 		})
 	})
-	store := persistence.NewInMemoryStore(5 * time.Hour)
-	r.GET("/data", cache.CachePage(store, 5*time.Hour, handler.GetDataBemFilkom))
-	r.GET("/sjw", cache.CachePage(store, 5*time.Hour, handler.GetDataSjw))
+	store := persistence.NewInMemoryStore(3 * time.Hour)
+	r.GET("/data", cache.CachePage(store, 3*time.Hour, handler.GetDataBemFilkom))
+	r.GET("/sjw", cache.CachePage(store, 3*time.Hour, handler.GetDataSjw))
 	r.Run()
 	// status := strings.Contains("RUMAH ADVOKASI | Launching Rumah Advokasi", "RUMAH ADVOKASI")
 	// fmt.Println(status)
