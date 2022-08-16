@@ -21,7 +21,7 @@ func main() {
 		})
 	})
 	store := persistence.NewInMemoryStore(3 * time.Hour)
-	r.GET("/data", cache.CachePage(store, 3*time.Hour, handler.GetDataBemFilkom))
+	r.GET("/bemfilkom", cache.CachePage(store, 3*time.Hour, handler.GetDataBemFilkom))
 	r.GET("/sjw", cache.CachePage(store, 3*time.Hour, handler.GetDataSjw))
 	r.Run()
 	// status := strings.Contains("RUMAH ADVOKASI | Launching Rumah Advokasi", "RUMAH ADVOKASI")
