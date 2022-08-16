@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-contrib/cache/persistence"
+	"github.com/joho/godotenv"
 
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cors"
@@ -12,6 +13,10 @@ import (
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 	r := gin.Default()
 	r.Use(cors.Default())
 	r.GET("/hello", func(c *gin.Context) {

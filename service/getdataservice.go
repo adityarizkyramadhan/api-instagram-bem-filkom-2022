@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -23,7 +24,7 @@ func GetResponseFromIG() ([]model.DataIG, error) {
 	}
 
 	req.Header.Add("X-RapidAPI-Host", "instagram47.p.rapidapi.com'")
-	req.Header.Add("X-RapidAPI-Key", "72952e64bdmshe2e87b888f28b6dp1c9e44jsn7954eb2f9159")
+	req.Header.Add("X-RapidAPI-Key", os.Getenv("RAPID_API_KEY"))
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
