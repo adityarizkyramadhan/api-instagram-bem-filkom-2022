@@ -4,13 +4,12 @@ import (
 	"api-instagram-bem-filkom-2022/entity"
 	"api-instagram-bem-filkom-2022/model"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 func GetResponseFromIG() ([]model.DataIG, error) {
