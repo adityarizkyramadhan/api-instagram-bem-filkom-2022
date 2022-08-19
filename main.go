@@ -5,15 +5,10 @@ import (
 	"api-instagram-bem-filkom-2022/handler"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
-	_, err = config.InitDB()
+	_, err := config.InitDB()
 	if err != nil {
 		panic(err)
 	}
