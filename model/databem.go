@@ -1,6 +1,9 @@
 package model
 
+import "gorm.io/gorm"
+
 type DataIG struct {
+	gorm.Model
 	ThumbnailSrc string `gorm:"thumbnail_src"`
 	Caption      string `gorm:"caption"`
 	Tanggal      string `gorm:"tanggal"`
@@ -9,6 +12,7 @@ type DataIG struct {
 }
 
 type DataIGSjw struct {
+	gorm.Model
 	ThumbnailSrc string `gorm:"thumbnail_src"`
 	Caption      string `gorm:"caption"`
 	Tanggal      string `gorm:"tanggal"`
