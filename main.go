@@ -4,6 +4,7 @@ import (
 	"api-instagram-bem-filkom-2022/config"
 	"api-instagram-bem-filkom-2022/handler"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +19,7 @@ func main() {
 			"message": "Hello World!",
 		})
 	})
+	r.Use(cors.Default())
 	r.GET("/data", handler.GetDataBemFilkom)
 	r.GET("/sjw", handler.GetDataBemFilkomSjw)
 	r.GET("/data/update", handler.UpdateDataBemFilkom)
