@@ -22,7 +22,6 @@ func main() {
 	r.Use(cors.Default())
 	r.GET("/data", handler.GetDataBemFilkom)
 	r.GET("/sjw", handler.GetDataBemFilkomSjw)
-	r.GET("/data/update", handler.UpdateDataBemFilkom)
 	r.GET("/sjw/update", handler.UpdateDataBemFilkomSjw)
 	r.Run()
 

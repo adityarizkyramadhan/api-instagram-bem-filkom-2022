@@ -41,20 +41,6 @@ func GetDataBemFilkomSjw(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.ResponseAPI("Data dari database berhasil ditemukan", true, data))
 }
 
-func UpdateDataBemFilkom(c *gin.Context) {
-	db, err := config.InitDB()
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err.Error()))
-		return
-	}
-	data, err := service.UpdateResponseFromIG(db)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.ResponseAPI("APInya error kontak yang bikin ya", false, err.Error()))
-		return
-	}
-	c.JSON(http.StatusOK, helper.ResponseAPI("Data dari database berhasil ditemukan", true, data))
-}
-
 func UpdateDataBemFilkomSjw(c *gin.Context) {
 	db, err := config.InitDB()
 	if err != nil {
