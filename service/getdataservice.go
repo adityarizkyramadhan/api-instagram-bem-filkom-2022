@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -43,7 +43,7 @@ func UpdateResponseFromHastag(db *gorm.DB) ([]model.DataIGSjw, error) {
 	// if err != nil {
 	// 	return err
 	// }
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil || body == nil {
 		return []model.DataIGSjw{}, err
 	}
