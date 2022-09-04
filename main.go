@@ -3,7 +3,10 @@ package main
 import (
 	"api-instagram-bem-filkom-2022/config"
 	"api-instagram-bem-filkom-2022/handler"
+	"time"
 
+	"github.com/gin-contrib/cache"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -20,9 +23,9 @@ func main() {
 		})
 	})
 	r.Use(cors.Default())
-	r.GET("/data", handler.GetDataBemFilkom)
-	r.GET("/sjw", handler.GetDataBemFilkomSjw)
-	r.GET("/sjw/update", handler.UpdateDataBemFilkomSjw)
+	store := persistence.NewInMemoryStore(5 * time.Hour)
+	r.GET("/data", cache.CachePage(store, 5*time.Hour, handler.GetDataBemFilkom))
+	r.GET("/sjw", cache.CachePage(store, 5*time.Hour, handler.GetDataBemFilkomSjw))
 	r.Run()
 
 }
