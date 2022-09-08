@@ -9,10 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// type idUser struct {
-// 	Id string `uri :"id"`
-// }
-
 func GetDataBemFilkom(c *gin.Context) {
 	db, err := config.InitDB()
 	if err != nil {
